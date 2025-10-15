@@ -1,0 +1,21 @@
+<header class="header">
+  <div class="header__inner">
+    <app-logo class="header__logo" />
+
+    <nav class="header__nav">
+      <a routerLink="/products" routerLinkActive="active">Products</a>
+      @if (isLoggedIn()) {
+      <a routerLink="/cart" routerLinkActive="active">Cart</a>
+      <a routerLink="/orders" routerLinkActive="active">Orders</a>
+      <a routerLink="/profile" routerLinkActive="active">{{ username }}</a>
+      <div>
+        <button class="logout-btn" (click)="logout()">Logout</button>
+        <p class="timer">{{ timeLeftInSession | timeFormat }}</p>
+      </div>
+
+      } @else {
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      }
+    </nav>
+  </div>
+</header>

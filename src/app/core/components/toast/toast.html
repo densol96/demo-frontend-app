@@ -1,0 +1,11 @@
+<div class="toast-container">
+  @for (n of notifications(); track n.id) {
+  <div class="toast" [class]="n.type">
+    <div class="toast-header">
+      <span class="toast-icon">{{ getIcon(n.type) }}</span>
+      <span class="toast-message">{{ n.message }}</span>
+      <button class="toast-close" (click)="remove(n.id)" aria-label="Close">&times;</button>
+    </div>
+  </div>
+  }
+</div>

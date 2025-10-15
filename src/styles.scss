@@ -1,1 +1,89 @@
 /* You can add global styles to this file, and also import other style files */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Poppins', system-ui, sans-serif;
+
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+
+  --color-primary: #7bb035;
+  --color-primary-light: #8dbb51;
+  --color-primary-transparent: #7bb0352a;
+
+  --color-secondary: #2c3235;
+
+  --radius-base: 12px;
+  --transition-fast: 0.2s ease-in-out;
+  --shadow-base: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  /* FONTS */
+  --font-size--xxl: 7.2rem;
+  --font-size--xl: 4.8rem;
+  --font-size--l: 3.6rem;
+  --font-size--m: 2.4rem;
+  --font-size--default: 1.6rem;
+  --font-size--s: 1.4rem;
+  --font-size--xs: 1.2rem;
+
+  /* GAPS */
+  --gap--xxl: 6rem;
+  --gap--xl: 4rem;
+  --gap--l: 3rem;
+  --gap--m: 2rem;
+  --gap--s: 1rem;
+  --gap--xs: 0.5rem;
+
+  /* SPACINGS */
+  --spacing-xs: 1rem;
+  --spacing-s: 2rem;
+  --spacing--m: 7.2rem;
+  --spacing--l: 9.2rem;
+  --spacing--largest: 15rem;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-size--default);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-primary-light);
+  }
+}
+
+button {
+  font-size: var(--font-size--default);
+}

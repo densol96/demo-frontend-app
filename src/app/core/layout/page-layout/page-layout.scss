@@ -1,0 +1,22 @@
+:host {
+  //   background: linear-gradient(to bottom right, var(--color-primary), var(--color-primary-light));
+  background: linear-gradient(to bottom right, rgba(123, 176, 53, 0.8), rgba(141, 187, 81, 0.8));
+  display: block;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 120rem;
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: var(--color-bg);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+main {
+  flex-grow: 1;
+  padding: 5rem;
+}
