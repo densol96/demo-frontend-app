@@ -1,1 +1,22 @@
-<h1>product-list works!</h1>
+<section class="product-list">
+  @if (loading()) {
+  <div class="product-list__loading">
+    <p>Loading products...</p>
+  </div>
+  } @else if (error()) {
+  <div class="product-list__error">
+    <p>{{ error() }}</p>
+    <button (click)="loadProducts(true)">Try again</button>
+  </div>
+  } @else { @if (productsPerPage().length > 0) {
+  <app-sort-control [selectedField]="sortBy()" [selectedOrder]="sortOrder()" [fields]="fields" />
+  <div class="product-list__grid">
+    @for (product of productsPerPage(); track product.id) {
+    <app-product-card [product]="product"></app-product-card>
+    }
+  </div>
+  <app-pagination [totalPages]="totalPages()" [currentPage]="page()"></app-pagination>
+  } @else {
+  <p class="product-list__empty">No products available.</p>
+  } }
+</section>

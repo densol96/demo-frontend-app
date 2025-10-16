@@ -1,0 +1,28 @@
+<div class="product-card">
+  <div class="product-card__info">
+    <h3 class="product-card__title">{{ product().name }}</h3>
+
+    <p class="product-card__desc">
+      {{ product().description || 'No description available.' }}
+    </p>
+
+    <div class="product-card__bottom">
+      <span class="product-card__price">
+        {{ product().price | currency : 'EUR' : 'symbol' }}
+      </span>
+
+      <span class="product-card__stock" [class.low-stock]="product().stock && product().stock < 10">
+        In stock: {{ product().stock }}
+      </span>
+
+      <div class="btns">
+        @if(authService.isEmployee()) {
+        <button class="product-card__btn status-red" (click)="onDelete()">Delete</button>
+        <button class="product-card__btn status-yellow" (click)="addToCart()">Edit</button>
+        } @if(authService.isCustomer()) {
+        <button class="product-card__btn status-green" (click)="addToCart()">Add to cart</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

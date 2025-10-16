@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { afterNextRender, effect, inject, Injectable, signal } from '@angular/core';
-import { User } from '../model/user';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { User, UserRole } from '../model/user';
 import { environment } from '../../../environments/environment';
 import { catchError, of, tap, throwError } from 'rxjs';
 import { LoggerService } from './logger';
@@ -17,7 +17,7 @@ const SESSION_TIMEOUT = 5 * 60 * 1000;
 })
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   private readonly logger = inject(LoggerService);
   private readonly notificationService = inject(NotificationService);
 
@@ -28,11 +28,14 @@ export class AuthService {
 
   private readonly _currentUser = signal<User | null>(null);
   readonly currentUser = readonlySignal(this._currentUser);
+  readonly isCustomer = computed(() => this._currentUser()?.role === 'CUSTOMER');
+  readonly isEmployee = computed(() => this._currentUser()?.role === 'EMPLOYEE');
 
   private logoutTimer: ReturnType<typeof setTimeout> | null = null;
 
   private _secondsRemainingInSession = signal<number | undefined>(undefined);
-  secondsRemainingInSession = this._secondsRemainingInSession.asReadonly();
+  readonly secondsRemainingInSession = this._secondsRemainingInSession.asReadonly();
+
   private tillLogoutSecInterval: ReturnType<typeof setInterval> | null = null;
 
   constructor() {

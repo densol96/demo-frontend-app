@@ -1,0 +1,15 @@
+@if(fields().length) {
+<div class="sort-control">
+  <label>Sort by:</label>
+
+  <select (change)="onFieldChange($event)">
+    @for (field of fields(); track field) {
+    <option [value]="field" [selected]="field === selectedField()">{{ field | titlecase }}</option>
+    }
+  </select>
+
+  <button class="toggle" (click)="toggleOrder()">
+    {{ selectedOrder() === 'asc' ? '↑ Asc' : '↓ Desc' }}
+  </button>
+</div>
+}

@@ -87,3 +87,27 @@ a {
 button {
   font-size: var(--font-size--default);
 }
+
+.status-red {
+  background-color: #f44336 !important;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.status-yellow {
+  background-color: #ffeb3b !important;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.status-green {
+  background-color: #4caf50 !important;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}

@@ -1,0 +1,23 @@
+.sort-control {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+select {
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+button.toggle {
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+button.toggle:hover {
+  background: #ddd;
+}
