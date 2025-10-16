@@ -1,0 +1,12 @@
+<div class="cart-item">
+  <div class="cart-item__info">
+    <h3 class="cart-item__name">{{ cartItem().productName }}</h3>
+    <p class="cart-item__quantity">Quantity: {{ cartItem().quantity }}</p>
+  </div>
+
+  <div class="cart-item__price">
+    <span>{{ cartItem().price | currency : 'USD' }}</span>
+  </div>
+
+  <button class="cart-item__remove" title="Remove item" (click)="onDelete()">✕</button>
+</div>

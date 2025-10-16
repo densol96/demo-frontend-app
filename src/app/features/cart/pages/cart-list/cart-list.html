@@ -1,0 +1,40 @@
+<div class="cart-list">
+  @if (loading()) {
+  <div class="cart-list__loading">Loading cart...</div>
+  } @if (error()) {
+  <div class="cart-list__error">{{ error() }}</div>
+  } @if (!loading() && !error()) { @if (cartItems.length === 0) {
+  <p class="cart-list__empty">Your cart is empty 🛒</p>
+  } @else {
+  <div class="cart-list__items">
+    @for (item of cartItems; track item.productId) {
+    <app-cart-item-card [cartItem]="item" />
+    }
+  </div>
+
+  <div class="cart-list__footer">
+    <div class="cart-list__summary">
+      <span class="cart-list__total-label">Total:</span>
+      <span class="cart-list__total">{{ total() | currency : 'USD' }}</span>
+    </div>
+
+    <div class="cart-list__actions">
+      <button
+        class="cart-list__btn cart-list__btn--clear"
+        (click)="clearCart()"
+        title="Remove all items from cart"
+      >
+        🧹 Clear cart
+      </button>
+
+      <button
+        class="cart-list__btn cart-list__btn--checkout"
+        (click)="checkout()"
+        title="Proceed to checkout"
+      >
+        💳 Checkout
+      </button>
+    </div>
+  </div>
+  } }
+</div>
