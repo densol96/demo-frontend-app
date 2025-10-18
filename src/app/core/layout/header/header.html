@@ -4,19 +4,16 @@
 
     <nav class="header__nav">
       <a routerLink="/products" routerLinkActive="active">Products</a>
-      @if (isLoggedIn()) { @if(hasCustomerRole()) {
-      <a routerLink="/cart" routerLinkActive="active">Cart</a>
-      <a routerLink="/orders" routerLinkActive="active">Orders</a>
-      }
-      <a routerLink="/profile" routerLinkActive="active">{{ username }}</a>
-      <div>
+      <a *appAuth="'CUSTOMER'" routerLink="/cart" routerLinkActive="active">Cart</a>
+      <a *appAuth="'CUSTOMER'" routerLink="/orders" routerLinkActive="active">Orders</a>
+      <p *appAuth>{{ username }}</p>
+      <div *appAuth="'AUTHENTICATED'; notLoggedInTml: loginTpl">
         <button class="logout-btn" (click)="logout()">Logout</button>
         <p class="timer">{{ timeLeftInSession | timeFormat }}</p>
       </div>
-
-      } @else {
-      <a routerLink="/login" routerLinkActive="active">Login</a>
-      }
+      <ng-template #loginTpl>
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </ng-template>
     </nav>
   </div>
 </header>

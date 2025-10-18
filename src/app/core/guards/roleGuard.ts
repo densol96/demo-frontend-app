@@ -10,7 +10,6 @@ export function roleGuard(allowedRoles: UserRole[]): CanMatchFn {
     const currentUser = auth.currentUser();
 
     if (!currentUser || !allowedRoles.includes(currentUser.role)) {
-      //   router.navigate(['/forbidden']);
       return router.createUrlTree(['/']);
     }
 

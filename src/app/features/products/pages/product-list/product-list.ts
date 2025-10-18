@@ -2,12 +2,14 @@ import { Component, computed, effect, inject, OnInit, signal } from '@angular/co
 import { ProductService } from '../../services/product-service';
 import { finalize, map } from 'rxjs';
 import { ProductCard } from '../../components/product-card/product-card';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Pagination } from '../../../../shared/components/pagination/pagination';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SortControl } from '../../../../shared/components/sort-control/sort-control';
 import { SortOrder } from '../../../../shared/models/sort-order';
 import { SortBy } from '../../models/product';
+import { AuthService } from '../../../../core/services/auth';
+import { AuthDirective } from '../../../../shared/directives/auth-directive';
 
 const RESULTS_PER_PAGE = 12;
 const SORT_BY = 'price';
@@ -16,7 +18,7 @@ const FIELDS = ['price', 'stock'];
 
 @Component({
   selector: 'app-product-list',
-  imports: [ProductCard, Pagination, SortControl],
+  imports: [ProductCard, Pagination, SortControl, RouterLink, RouterOutlet, AuthDirective],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })
@@ -24,6 +26,7 @@ export class ProductList {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private productService = inject(ProductService);
+  authService = inject(AuthService);
 
   private allProducts = this.productService.products;
   loading = signal(false);

@@ -1,0 +1,64 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+input,
+textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+.req {
+  color: #d33;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.cancel {
+  background: #ccc;
+  color: #000;
+}
+
+button.save {
+  background: #28a745;
+  color: #fff;
+}
+
+button.save:disabled {
+  background: #a5d6a7;
+  cursor: not-allowed;
+}
+
+h3 {
+  margin-bottom: 2rem;
+}

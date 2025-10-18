@@ -6,7 +6,6 @@ import { formatSecondsToMMSS } from '../utils/formatSecondsToMMSS';
 })
 export class TimeFormatPipe implements PipeTransform {
   transform(value: number | null | undefined): string {
-    console.log('SECONDS ', value);
     return formatSecondsToMMSS(value ?? 0);
   }
 }

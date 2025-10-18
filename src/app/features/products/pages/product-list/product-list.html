@@ -1,4 +1,13 @@
+<router-outlet />
 <section class="product-list">
+  <a
+    *appAuth="'EMPLOYEE'"
+    routerLink="add"
+    class="product-list__btn product-list__btn--create"
+    title="Add new product"
+  >
+    ➕ Add Product
+  </a>
   @if (loading()) {
   <div class="product-list__loading">
     <p>Loading products...</p>

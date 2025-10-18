@@ -16,12 +16,15 @@
       </span>
 
       <div class="btns">
-        @if(authService.isEmployee()) {
-        <button class="product-card__btn status-red" (click)="onDelete()">Delete</button>
-        <button class="product-card__btn status-yellow" (click)="addToCart()">Edit</button>
-        } @if(authService.isCustomer()) {
-        <button class="product-card__btn status-green" (click)="addToCart()">Add to cart</button>
-        }
+        <button *appAuth="'EMPLOYEE'" class="product-card__btn status-red" (click)="onDelete()">
+          Delete
+        </button>
+        <button *appAuth="'EMPLOYEE'" class="product-card__btn status-yellow" (click)="onEdit()">
+          Edit
+        </button>
+        <button *appAuth="'CUSTOMER'" class="product-card__btn status-green" (click)="addToCart()">
+          Add to cart
+        </button>
       </div>
     </div>
   </div>

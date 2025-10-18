@@ -4,14 +4,17 @@ import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../../cart/services/cart-service';
+import { AuthDirective } from '../../../../shared/directives/auth-directive';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, AuthDirective],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 })
 export class ProductCard {
+  router = inject(Router);
   authService = inject(AuthService);
   productService = inject(ProductService);
   cartService = inject(CartService);
@@ -24,5 +27,9 @@ export class ProductCard {
 
   onDelete() {
     this.productService.deleteProduct(this.product());
+  }
+
+  onEdit() {
+    this.router.navigate(['products', 'edit', this.product().id]);
   }
 }

@@ -7,3 +7,5 @@ export interface Product {
 }
 
 export type SortBy = Extract<keyof Product, 'price' | 'stock'>;
+
+export type ProductUpsert = Exclude<Product, 'id'>;

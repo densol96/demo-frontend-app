@@ -1,0 +1,9 @@
+@let f = fc();
+<!--  -->
+@if (f.touched && f.invalid) {
+<div class="error">
+  @for(err of activeErrors; track err) {
+  <small>{{ err }}</small>
+  }
+</div>
+}

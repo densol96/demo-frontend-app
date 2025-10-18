@@ -4,7 +4,7 @@ import { readonlySignal } from '../../../shared/utils/readonlySignal';
 import { catchError, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { LoggerService } from '../../../core/services/logger';
-import { Product } from '../models/product';
+import { Product, ProductUpsert } from '../models/product';
 import { AuthService } from '../../../core/services/auth';
 import { UserRole } from '../../../core/model/user';
 import { NotificationService } from '../../../core/services/notifications';
@@ -24,6 +24,10 @@ export class ProductService {
   private readonly apiUrl = `${environment.apiUrl}/products`;
   private lastLoadedAt: number | null = null;
 
+  findByIdFromAlreadyLoaded(id: number) {
+    return this._products().find((p) => p.id === id);
+  }
+
   loadProducts(force = false) {
     const now = Date.now();
     const tooOld = !this.lastLoadedAt || now - this.lastLoadedAt > 60_000;
@@ -41,6 +45,72 @@ export class ProductService {
       }),
       catchError((err) => {
         this.logger.error('AuthService', `Failed to load products`, err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  createProduct(product: ProductUpsert) {
+    const before = this._products();
+    const loggedInUser = this.authService.currentUser();
+
+    let obs;
+
+    if (!loggedInUser || loggedInUser?.role !== 'EMPLOYEE')
+      obs = throwError(() => new Error('Only employees can create new products'));
+    else {
+      const params = new HttpParams().set('requestorId', loggedInUser.id.toString());
+      this._products.update((prev) => [...prev, { ...product, id: prev.length + 1 }]);
+      obs = this.httpClient.post<Product>(`${this.apiUrl}`, product, { params });
+    }
+
+    return obs.pipe(
+      tap((product) => {
+        this.logger.success('ProductService', `Created new product:`, product);
+        this.notificationService.success('Product has been created!');
+        this.loadProducts(true); // in case a different employee also has created something
+      }),
+      catchError((err) => {
+        this.logger.error('ProductService', `Failed to create product:`, err);
+        this._products.set(before);
+        this.notificationService.error(
+          'Product creation is currently unavailable.. Try again later!'
+        );
+        return throwError(() => err);
+      })
+    );
+  }
+
+  editProduct(productId: number, product: ProductUpsert) {
+    const before = this._products();
+    const loggedInUser = this.authService.currentUser();
+
+    let obs;
+
+    if (!loggedInUser || loggedInUser?.role !== 'EMPLOYEE')
+      obs = throwError(() => new Error('Only employees can update new products'));
+    else {
+      const params = new HttpParams().set('requestorId', loggedInUser.id.toString());
+      this._products.update((prev) =>
+        prev.map((prevProduct) =>
+          prevProduct.id === prevProduct.id ? { ...prevProduct, ...product } : prevProduct
+        )
+      );
+      obs = this.httpClient.put<Product>(`${this.apiUrl}/${productId}`, product, { params });
+    }
+
+    return obs.pipe(
+      tap((product) => {
+        this.logger.success('ProductService', `Updated product:`, product);
+        this.notificationService.success('Product has been updated!');
+        this.loadProducts(true);
+      }),
+      catchError((err) => {
+        this.logger.error('ProductService', `Failed to update product:`, err);
+        this._products.set(before);
+        this.notificationService.error(
+          'Product update is currently unavailable.. Try again later!'
+        );
         return throwError(() => err);
       })
     );

@@ -1,0 +1,15 @@
+<app-modal (close)="close()">
+  @if (product()) {
+  <app-product-form
+    title="Edit Product"
+    [existingProduct]="product()!"
+    (submitForm)="submit($event)"
+    (cancel)="close()"
+  />
+  } @else {
+  <div class="not-found">
+    <h2>Product not found</h2>
+    <p>You’ll be redirected to the products page shortly...</p>
+  </div>
+  }
+</app-modal>

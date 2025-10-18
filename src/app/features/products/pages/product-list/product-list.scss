@@ -41,3 +41,35 @@
     margin-top: 1.5rem;
   }
 }
+
+.product-list__btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-bottom: 2rem;
+}
+
+.product-list__btn--create {
+  background-color: #28a745; /* зелёный */
+  color: #fff;
+}
+
+.product-list__btn--create:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+.product-list__btn--create:active {
+  background-color: #1e7e34;
+  transform: translateY(0);
+}
+
+.product-list__btn:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+  transform: none;
+}

@@ -28,8 +28,7 @@ export class AuthService {
 
   private readonly _currentUser = signal<User | null>(null);
   readonly currentUser = readonlySignal(this._currentUser);
-  readonly isCustomer = computed(() => this._currentUser()?.role === 'CUSTOMER');
-  readonly isEmployee = computed(() => this._currentUser()?.role === 'EMPLOYEE');
+  readonly isLoggedIn = computed(() => !!this._currentUser());
 
   private logoutTimer: ReturnType<typeof setTimeout> | null = null;
 
