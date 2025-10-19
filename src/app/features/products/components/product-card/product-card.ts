@@ -26,7 +26,7 @@ export class ProductCard {
   }
 
   onDelete() {
-    this.productService.deleteProduct(this.product());
+    this.productService.deleteProduct(this.product().id);
   }
 
   onEdit() {
