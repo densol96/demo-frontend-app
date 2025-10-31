@@ -1,7 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { Product } from '../../models/product';
 import { CurrencyPipe } from '@angular/common';
-import { AuthService } from '../../../../core/services/auth';
 import { ProductService } from '../../services/product-service';
 import { CartService } from '../../../cart/services/cart-service';
 import { AuthDirective } from '../../../../shared/directives/auth-directive';
@@ -15,7 +14,6 @@ import { Router } from '@angular/router';
 })
 export class ProductCard {
   router = inject(Router);
-  authService = inject(AuthService);
   productService = inject(ProductService);
   cartService = inject(CartService);
 

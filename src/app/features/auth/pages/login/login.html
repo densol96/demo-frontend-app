@@ -2,12 +2,12 @@
   <h1>Sign in</h1>
   <p>Select a user to continue:</p>
 
-  <select [(ngModel)]="selectedUser">
+  <select [(ngModel)]="selectedUserId">
     <option value="">-- choose a user --</option>
-    @for (user of loadedUsers(); track user.id) {
+    @for (user of loadedUsers | async; track user.id) {
     <option [value]="user.id">{{ user.username }} ({{ user.role }})</option>
     }
   </select>
 
-  <button [disabled]="!selectedUser()" (click)="login()">Sign in</button>
+  <button [disabled]="!selectedUserId()" (click)="login()">Sign in</button>
 </section>

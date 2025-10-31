@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { LoggerService } from '../../../core/services/logger';
-import { AuthService } from '../../../core/services/auth';
 import { NotificationService } from '../../../core/services/notifications';
 import { Cart } from '../models/cart';
 import { readonlySignal } from '../../../shared/utils/readonlySignal';
 import { environment } from '../../../../environments/environment';
 import { catchError, of, tap, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectCurrentUser } from '../../auth/store/auth.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,6 @@ import { catchError, of, tap, throwError } from 'rxjs';
 export class CartService {
   private readonly httpClient = inject(HttpClient);
   private readonly logger = inject(LoggerService);
-  private readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
 
   private readonly _cart = signal<Cart | null>(null);
@@ -23,8 +23,11 @@ export class CartService {
   private readonly apiUrl = `${environment.apiUrl}/cart`;
   private lastLoadedAt: number | null = null;
 
+  private store = inject(Store);
+  private currentUser = this.store.selectSignal(selectCurrentUser);
+
   loadCart(force = false) {
-    const loggedInUser = this.authService.currentUser();
+    const loggedInUser = this.currentUser();
     if (loggedInUser?.role !== 'CUSTOMER')
       return throwError(() => new Error('Employees have no carts'));
 
@@ -54,7 +57,7 @@ export class CartService {
   }
 
   addToCart(productId: number) {
-    const loggedInUser = this.authService.currentUser();
+    const loggedInUser = this.currentUser();
     if (loggedInUser?.role !== 'CUSTOMER') return;
 
     const params = new HttpParams()
@@ -82,7 +85,7 @@ export class CartService {
   }
 
   removeFromCart(productId: number) {
-    const loggedInUser = this.authService.currentUser();
+    const loggedInUser = this.currentUser();
     if (loggedInUser?.role !== 'CUSTOMER') return;
 
     const params = new HttpParams()
@@ -122,7 +125,7 @@ export class CartService {
   }
 
   clearCart() {
-    const loggedInUser = this.authService.currentUser();
+    const loggedInUser = this.currentUser();
     if (loggedInUser?.role !== 'CUSTOMER') return;
 
     const params = new HttpParams().set('userId', loggedInUser.id.toString());

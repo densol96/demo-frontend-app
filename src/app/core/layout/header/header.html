@@ -6,10 +6,10 @@
       <a routerLink="/products" routerLinkActive="active">Products</a>
       <a *appAuth="'CUSTOMER'" routerLink="/cart" routerLinkActive="active">Cart</a>
       <a *appAuth="'CUSTOMER'" routerLink="/orders" routerLinkActive="active">Orders</a>
-      <p *appAuth>{{ username }}</p>
+      <p *appAuth>{{ (loggedInUser | async)?.username }}</p>
       <div *appAuth="'AUTHENTICATED'; notLoggedInTml: loginTpl">
         <button class="logout-btn" (click)="logout()">Logout</button>
-        <p class="timer">{{ timeLeftInSession | timeFormat }}</p>
+        <p class="timer">{{ secondsRemainingInSession | async | timeFormat }}</p>
       </div>
       <ng-template #loginTpl>
         <a routerLink="/login" routerLinkActive="active">Login</a>

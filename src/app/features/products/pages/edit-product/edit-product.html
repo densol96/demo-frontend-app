@@ -1,8 +1,10 @@
+@let product = product$ | async;
+
 <app-modal (close)="close()">
-  @if (product()) {
+  @if (product) {
   <app-product-form
     title="Edit Product"
-    [existingProduct]="product()!"
+    [existingProduct]="product"
     (submitForm)="submit($event)"
     (cancel)="close()"
   />

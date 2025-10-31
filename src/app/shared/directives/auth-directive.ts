@@ -1,6 +1,7 @@
 import { Directive, effect, inject, input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { UserRole } from '../../core/model/user';
-import { AuthService } from '../../core/services/auth';
+import { Store } from '@ngrx/store';
+import { selectCurrentUser, selectIsLoggedIn } from '../../features/auth/store/auth.selector';
 
 type AllRoles = 'AUTHENTICATED' | ''; // '' = when using *appAuth with no argument
 
@@ -35,7 +36,9 @@ export class AuthDirective {
   userRole = input<UserRole | AllRoles>(undefined, { alias: 'appAuth' });
   notLoggedInTml = input<TemplateRef<unknown>>(undefined, { alias: 'appAuthNotLoggedInTml' });
 
-  private auth = inject(AuthService);
+  private store = inject(Store);
+  private currentUser = this.store.selectSignal(selectCurrentUser);
+  private isLoggedIn = this.store.selectSignal(selectIsLoggedIn);
   private tpl = inject(TemplateRef<unknown>);
   private vcr = inject(ViewContainerRef);
 
@@ -43,8 +46,8 @@ export class AuthDirective {
     effect(() => {
       const role = this.userRole();
       const elseTpl = this.notLoggedInTml();
-      const user = this.auth.currentUser();
-      const loggedIn = !!user;
+      const user = this.currentUser();
+      const loggedIn = this.isLoggedIn();
 
       /**
        * If the directive is used with no role, or with 'AUTHENTICATED',

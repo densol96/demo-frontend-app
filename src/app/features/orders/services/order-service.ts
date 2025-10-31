@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { LoggerService } from '../../../core/services/logger';
-import { AuthService } from '../../../core/services/auth';
 import { NotificationService } from '../../../core/services/notifications';
 import { readonlySignal } from '../../../shared/utils/readonlySignal';
 import { environment } from '../../../../environments/environment';
@@ -9,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Cart } from '../../cart/models/cart';
 import { Order } from '../models/order';
 import { catchError, of, tap, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectCurrentUser } from '../../auth/store/auth.selector';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,6 @@ import { catchError, of, tap, throwError } from 'rxjs';
 export class OrderService {
   private readonly httpClient = inject(HttpClient);
   private readonly logger = inject(LoggerService);
-  private readonly authService = inject(AuthService);
   private readonly notificationService = inject(NotificationService);
 
   private _orders = signal<Order[]>([]);
@@ -25,8 +25,11 @@ export class OrderService {
   private readonly apiUrl = `${environment.apiUrl}/orders`;
   private lastLoadedAt: number | null = null;
 
+  private store = inject(Store);
+  private currentUser = this.store.selectSignal(selectCurrentUser);
+
   loadOrders(force = false) {
-    const loggedInUser = this.authService.currentUser();
+    const loggedInUser = this.currentUser();
     if (loggedInUser?.role !== 'CUSTOMER')
       return throwError(() => new Error('Employees have no orders'));
 
@@ -52,7 +55,7 @@ export class OrderService {
   }
 
   createOrderByCheckout() {
-    const loggedInUser = this.authService.currentUser();
+    const loggedInUser = this.currentUser();
     if (loggedInUser?.role !== 'CUSTOMER')
       return throwError(() => new Error('Employees have no orders'));
 

@@ -1,6 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from './core/services/auth';
+import { Store } from '@ngrx/store';
+import { autoLogin } from './features/auth/store/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,10 @@ import { AuthService } from './core/services/auth';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
-  private authService = inject(AuthService);
+export class App implements OnInit {
+  private store = inject(Store);
 
-  constructor() {}
+  ngOnInit(): void {
+    this.store.dispatch(autoLogin());
+  }
 }

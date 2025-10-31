@@ -46,7 +46,7 @@ export class CartList implements OnInit {
   checkout() {
     this.orderService.createOrderByCheckout().subscribe(() => {
       this.cartService.loadCart(true).subscribe();
-      this.productService.loadProducts(true).subscribe();
+      this.productService.loadProducts().subscribe();
     });
   }
 

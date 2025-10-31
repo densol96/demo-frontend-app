@@ -1,4 +1,17 @@
-<router-outlet />
+@let productsPerPage = productsPerPage$| async;
+<!--  -->
+@let loading = loading$ | async;
+<!--  -->
+@let error = error$ | async;
+<!--  -->
+@let sortBy = sortBy$ | async;
+<!--  -->
+@let sortOrder = sortOrder$ | async;
+<!--  -->
+@let page = page$ | async;
+<!--  -->
+@let totalPages = totalPages$ | async;
+
 <section class="product-list">
   <a
     *appAuth="'EMPLOYEE'"
@@ -8,24 +21,28 @@
   >
     ➕ Add Product
   </a>
-  @if (loading()) {
+  @if (loading) {
   <div class="product-list__loading">
     <p>Loading products...</p>
   </div>
-  } @else if (error()) {
+  } @else if (error) {
   <div class="product-list__error">
-    <p>{{ error() }}</p>
+    <p>{{ error }}</p>
     <button (click)="loadProducts(true)">Try again</button>
   </div>
-  } @else { @if (productsPerPage().length > 0) {
-  <app-sort-control [selectedField]="sortBy()" [selectedOrder]="sortOrder()" [fields]="fields" />
+  } @else { @if (productsPerPage && productsPerPage.length > 0) { @if (sortBy && sortOrder) {
+  <app-sort-control [selectedField]="sortBy" [selectedOrder]="sortOrder" [fields]="fields" />
+  }
   <div class="product-list__grid">
-    @for (product of productsPerPage(); track product.id) {
+    @for (product of productsPerPage; track product.id) {
     <app-product-card [product]="product"></app-product-card>
     }
   </div>
-  <app-pagination [totalPages]="totalPages()" [currentPage]="page()"></app-pagination>
-  } @else {
+  @if (totalPages && page) {
+  <app-pagination [totalPages]="totalPages" [currentPage]="page" />
+  } } @else {
   <p class="product-list__empty">No products available.</p>
   } }
 </section>
+
+<router-outlet />
