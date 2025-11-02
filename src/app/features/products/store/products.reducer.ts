@@ -17,9 +17,30 @@ export const productsReducer = createReducer(
     return { ...state, isLoading: false, error };
   }),
 
-  on(ProductsActions.editProduct, (state, { oldProduct, changes }) => {
+  on(ProductsActions.createProductOptimistically, (state, { fakeProduct }) => {
+    return {
+      ...state,
+      products: [...state.products, fakeProduct],
+    };
+  }),
+
+  on(ProductsActions.createProductFailure, (state, { fakeProductId }) => {
+    return {
+      ...state,
+      products: state.products.filter((p) => p.id !== fakeProductId),
+    };
+  }),
+
+  on(ProductsActions.createProductSuccess, (state, { fakeProductId, product }) => {
+    return {
+      ...state,
+      products: state.products.map((p) => (p.id === fakeProductId ? product : p)),
+    };
+  }),
+
+  on(ProductsActions.editProduct, (state, { previous, changes }) => {
     const updatedProducts = state.products.map((p) =>
-      p.id === oldProduct.id ? { ...p, ...changes } : p
+      p.id === previous.id ? { ...p, ...changes } : p
     );
     return {
       ...state,
@@ -32,6 +53,20 @@ export const productsReducer = createReducer(
     return {
       ...state,
       products: revertedProducts,
+    };
+  }),
+
+  on(ProductsActions.deleteProduct, (state, { forDelete }) => {
+    return {
+      ...state,
+      products: state.products.filter((p) => p.id !== forDelete.id),
+    };
+  }),
+
+  on(ProductsActions.deleteProductFailure, (state, { forDelete }) => {
+    return {
+      ...state,
+      products: [...state.products, forDelete],
     };
   })
 );

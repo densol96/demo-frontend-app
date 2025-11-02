@@ -33,17 +33,17 @@ export class NotificationsEffects {
 
   private selectLogFn(severity: AppActions.NotificationSeverity) {
     const logFunctions = {
-      error: this.logger.error,
-      success: this.logger.success,
-      warning: this.logger.warn,
-      info: this.logger.info,
+      error: this.logger.error.bind(this.logger),
+      success: this.logger.success.bind(this.logger),
+      warning: this.logger.warn.bind(this.logger),
+      info: this.logger.info.bind(this.logger),
     };
 
     const notifyFunctions = {
-      error: this.notification.error,
-      success: this.notification.success,
-      warning: this.notification.warning,
-      info: this.notification.info,
+      error: this.notification.error.bind(this.notification),
+      success: this.notification.success.bind(this.notification),
+      warning: this.notification.warning.bind(this.notification),
+      info: this.notification.info.bind(this.notification),
     };
 
     return {

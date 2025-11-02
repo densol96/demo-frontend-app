@@ -1,10 +1,9 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ProductForm } from '../../components/product-form/product-form';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../services/product-service';
 import { ProductUpsert } from '../../models/product';
 import { Modal } from '../../../../shared/components/modal/modal';
-import { combineLatest, debounceTime, filter, map, switchMap, take, tap, timer } from 'rxjs';
+import { combineLatest, filter, map, switchMap, take, tap, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectProductById, selectProductsAreLoading } from '../../store/products.selector';
 import { AsyncPipe } from '@angular/common';
@@ -37,7 +36,7 @@ export class EditProduct {
       this.store.dispatch(
         editProduct({
           changes: editedProduct,
-          oldProduct: product,
+          previous: product,
         })
       );
     });

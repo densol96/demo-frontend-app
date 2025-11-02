@@ -16,7 +16,7 @@ import { AuthEffects } from './features/auth/store/auth.effects';
 import { productsReducer } from './features/products/store/products.reducer';
 import { PRODUCTS_FEATURE_KEY } from './features/products/constants';
 import { ProductsEffects } from './features/products/store/products.effects';
-import { NotificationsEffects } from './core/store/notifications/notifications.effects';
+import { NotificationsEffects } from './core/store/app.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [

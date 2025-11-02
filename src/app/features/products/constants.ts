@@ -6,3 +6,7 @@ export const RESULTS_PER_PAGE = 12;
 export const SORT_BY = 'price';
 export const SORT_ORDER = 'desc';
 export const FIELDS = ['price', 'stock'];
+export const SHARED_APP_OPTIONS = {
+  showToUser: true,
+  source: 'ProductsEffects',
+};

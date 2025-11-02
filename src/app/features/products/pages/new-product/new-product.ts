@@ -4,6 +4,8 @@ import { ProductService } from '../../services/product-service';
 import { ProductUpsert } from '../../models/product';
 import { ProductForm } from '../../components/product-form/product-form';
 import { Modal } from '../../../../shared/components/modal/modal';
+import { Store } from '@ngrx/store';
+import { createProduct } from '../../store/products.actions';
 
 @Component({
   selector: 'app-new-product',
@@ -16,10 +18,10 @@ import { Modal } from '../../../../shared/components/modal/modal';
 })
 export class NewProduct {
   private router = inject(Router);
-  private productService = inject(ProductService);
+  private store = inject(Store);
 
   submit(product: ProductUpsert) {
-    this.productService.createProduct(product).subscribe(() => this.router.navigate(['/products']));
+    this.store.dispatch(createProduct({ productUpsert: product }));
   }
 
   close() {

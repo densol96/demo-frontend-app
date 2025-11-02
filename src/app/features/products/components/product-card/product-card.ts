@@ -5,6 +5,8 @@ import { ProductService } from '../../services/product-service';
 import { CartService } from '../../../cart/services/cart-service';
 import { AuthDirective } from '../../../../shared/directives/auth-directive';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { deleteProduct } from '../../store/products.actions';
 
 @Component({
   selector: 'app-product-card',
@@ -13,18 +15,17 @@ import { Router } from '@angular/router';
   styleUrl: './product-card.scss',
 })
 export class ProductCard {
-  router = inject(Router);
-  productService = inject(ProductService);
-  cartService = inject(CartService);
-
-  product = input.required<Product>();
+  private readonly router = inject(Router);
+  private readonly store = inject(Store);
+  private readonly cartService = inject(CartService);
+  readonly product = input.required<Product>();
 
   addToCart() {
     this.cartService.addToCart(this.product().id);
   }
 
   onDelete() {
-    this.productService.deleteProduct(this.product().id);
+    this.store.dispatch(deleteProduct({ forDelete: this.product() }));
   }
 
   onEdit() {
